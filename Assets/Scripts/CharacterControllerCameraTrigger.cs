@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class CharacterControllerCameraTrigger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    GameObject Pawn, CameraObject;
+    public bool CanFolloxPawn;
+    public float YMediant, YMax, Ymin;
+
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if(other == Pawn)
+        {
+
+            CameraObject.GetComponent<CameraCharacter2D>().CanFollow = CanFolloxPawn;
+            CameraObject.GetComponent<CameraCharacter2D>().Ymediant = YMediant;
+            CameraObject.GetComponent<CameraCharacter2D>().YMax = YMax;
+            CameraObject.GetComponent<CameraCharacter2D>().Ymin = Ymin;
+        }
     }
 }

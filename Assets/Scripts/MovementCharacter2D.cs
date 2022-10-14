@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MovementCharacter2D : MonoBehaviour
 {
@@ -11,7 +12,8 @@ public class MovementCharacter2D : MonoBehaviour
     float MovementValue;
     public float _Speed;
     Animator _animator;
-    public bool Negative;
+    public bool Negative, IsGrounded;
+    public LayerMask ActorMask;
     private bool isRunning = false;
 
 
@@ -35,7 +37,17 @@ public class MovementCharacter2D : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Physics.CheckSphere(transform.position, 2);
+        if (Controller._2DGame.Jump.IsPressed())
+        {
 
+            if(Physics.CheckSphere(transform.position, 2, ActorMask))
+            {
+                rb.AddForce(new Vector3(0, 2, 0), ForceMode.Impulse);
+                print("oui");
+            }
+
+        }
         
         MovementValue = Controller._2DGame.Movement.ReadValue<float>();
         if(MovementValue != 0)
@@ -75,4 +87,6 @@ public class MovementCharacter2D : MonoBehaviour
     {
         
     }
+
+
 }
