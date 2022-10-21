@@ -37,14 +37,24 @@ public class MovementCharacter2D : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        if (Physics.CheckSphere(transform.position, 0.5f, ActorMask))
+        {
+            IsGrounded = true;
+        }
+        else
+        {
+            IsGrounded = false;
+            rb.velocity += new Vector3(0, -1, 0); // rajout de gravité pour le faire revenir plus vite au sol
+        }
+
         Physics.CheckSphere(transform.position, 2);
         if (Controller._2DGame.Jump.IsPressed())
         {
 
-            if(Physics.CheckSphere(transform.position, 2, ActorMask))
+            if(IsGrounded == true)
             {
-                rb.AddForce(new Vector3(0, 2, 0), ForceMode.Impulse);
-                print("oui");
+                rb.AddForce(new Vector3(0, 15, 0), ForceMode.Impulse);
             }
 
         }
