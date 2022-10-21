@@ -92,6 +92,78 @@ public partial class @ControllerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""3DGame"",
+            ""id"": ""ac5be661-bd5b-409c-888d-49d2a581de27"",
+            ""actions"": [
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""Value"",
+                    ""id"": ""f23ab6df-aecc-4871-bcf4-e8f155ee0435"",
+                    ""expectedControlType"": ""Stick"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""ebb77356-cf8a-4128-b5e6-08de5ff4eade"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""9e7eaf9f-ad72-44d9-8e2f-e040caf831f1"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""f33a3556-a9fd-496a-92aa-ab61bfa9988e"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""4ab51def-77de-4a41-85ac-67d463c090c1"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""09800ba6-e758-4ee5-8306-94156406f04e"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -100,6 +172,9 @@ public partial class @ControllerInput : IInputActionCollection2, IDisposable
         m__2DGame = asset.FindActionMap("2DGame", throwIfNotFound: true);
         m__2DGame_Movement = m__2DGame.FindAction("Movement", throwIfNotFound: true);
         m__2DGame_Jump = m__2DGame.FindAction("Jump", throwIfNotFound: true);
+        // 3DGame
+        m__3DGame = asset.FindActionMap("3DGame", throwIfNotFound: true);
+        m__3DGame_Movement = m__3DGame.FindAction("Movement", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -196,9 +271,46 @@ public partial class @ControllerInput : IInputActionCollection2, IDisposable
         }
     }
     public _2DGameActions @_2DGame => new _2DGameActions(this);
+
+    // 3DGame
+    private readonly InputActionMap m__3DGame;
+    private I_3DGameActions m__3DGameActionsCallbackInterface;
+    private readonly InputAction m__3DGame_Movement;
+    public struct _3DGameActions
+    {
+        private @ControllerInput m_Wrapper;
+        public _3DGameActions(@ControllerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Movement => m_Wrapper.m__3DGame_Movement;
+        public InputActionMap Get() { return m_Wrapper.m__3DGame; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(_3DGameActions set) { return set.Get(); }
+        public void SetCallbacks(I_3DGameActions instance)
+        {
+            if (m_Wrapper.m__3DGameActionsCallbackInterface != null)
+            {
+                @Movement.started -= m_Wrapper.m__3DGameActionsCallbackInterface.OnMovement;
+                @Movement.performed -= m_Wrapper.m__3DGameActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= m_Wrapper.m__3DGameActionsCallbackInterface.OnMovement;
+            }
+            m_Wrapper.m__3DGameActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Movement.started += instance.OnMovement;
+                @Movement.performed += instance.OnMovement;
+                @Movement.canceled += instance.OnMovement;
+            }
+        }
+    }
+    public _3DGameActions @_3DGame => new _3DGameActions(this);
     public interface I_2DGameActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+    }
+    public interface I_3DGameActions
+    {
+        void OnMovement(InputAction.CallbackContext context);
     }
 }
